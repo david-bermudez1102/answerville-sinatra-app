@@ -1,0 +1,16 @@
+<% if flash[:message] %>
+<div class="alert alert-danger">
+  <%=flash[:message]%>
+</div>
+<% end %>
+<form action="/signup" method="POST">
+  <label for="name">Name</label>
+  <input type="text" name="name" id="name" placeholder="Enter your name">
+  <label for="username">Username</label>
+  <input type="text" name="username" id="username" placeholder="Enter a new username">
+  <label for="email">Email</label>
+  <input type="email" name="email" id="email" placeholder="Enter your email">
+  <label for="password">Password</label>
+  <input type="password" name="password" id="password" placeholder="Pick a secure password">
+  <input type="submit" value="Sign Up">
+</form>
