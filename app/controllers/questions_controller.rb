@@ -17,7 +17,15 @@ class QuestionsController < ApplicationController
 
   post '/questions' do
     if is_logged_in?
-      question = current_user.questions.build(params)
+      question = current_user.questions.build(params[:question])
+      if !params[:category][:name].empty?
+        category = Category.find_by(name:params[:category][:name])
+        if !category
+          question.categories.build(params[:category])
+        else
+          question.categories << category
+        end
+      end
       if question.save
         redirect to "/questions/#{question.id}"
       end
@@ -29,6 +37,7 @@ class QuestionsController < ApplicationController
 
   get '/questions/:id/edit' do
     if is_logged_in?
+      @question = Question.find_by_id(params[:id])
       erb :'/questions/edit'
     else
       redirect to "/login"

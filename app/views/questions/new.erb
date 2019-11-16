@@ -4,13 +4,13 @@
 </div>
 <% end %>
 <form action="/questions" method="POST">
-  <textarea type="text" name="content" id="content" placeholder="Type your question here. Maximum 500 characters."></textarea>
+  <textarea type="text" name="question[content]" id="content" placeholder="Type your question here. Maximum 500 characters."></textarea>
   <% if !Category.all.empty? %>
   <label>Pick a category</label>
     <% Category.all.each do |category|%>
-      <input type="check" name="category_ids[]" id="<%=category.id%>" value="<%=category.id%>"><%=category.name%>
+      <input type="checkbox" name="question[category_ids][]" id="<%=category.id%>" value="<%=category.id%>"><%=category.name%>
     <% end %>
   <% end %>
-  <input type="text" name="category" placeholder="Enter a new category">
-  <input type="submit" value="Sign Up">
+  <input type="text" name="category[name]" placeholder="Enter a new category">
+  <input type="submit" value="Question!">
 </form>

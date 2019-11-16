@@ -1,0 +1,14 @@
+<% if flash[:message] %>
+<div class="alert alert-danger">
+  <%=flash[:message]%>
+</div>
+<% end %>
+<form action="/questions/<%=@question.id%>" method="POST">
+  <textarea type="text" name="question[content]" id="content"><%=@question.content%></textarea>
+  <label>Categories</label>
+    <% Category.all.each do |category|%>
+      <input type="checkbox" name="question[category_ids][]" id="<%=category.id%>" value="<%=category.id%>" <%="checked" if @question.categories.include?category%>><%=category.name%>
+    <% end %>
+  <input type="text" name="category[name]" placeholder="Enter a new category">
+  <input type="submit" value="Question!">
+</form>

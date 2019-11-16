@@ -1,2 +1,9 @@
 <%=@question.content %>
+<%
+  categories = @question.categories.map do |category|
+    category.name
+  end
+%>
+Categories: <%=categories.join(", ")%>
+
 <a href="/questions/<%=@question.id%>/edit">Edit</a>
