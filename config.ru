@@ -5,6 +5,8 @@ if ActiveRecord::Base.connection.migration_context.needs_migration?
 end
 
 use Rack::MethodOverride
+use AnswersController
 use UsersController
 use QuestionsController
+use LikesController
 run ApplicationController

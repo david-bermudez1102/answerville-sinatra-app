@@ -19,7 +19,7 @@ class QuestionsController < ApplicationController
     if is_logged_in?
       question = current_user.questions.build(params[:question])
       if !params[:category][:name].empty?
-        category = Category.find_by(name:params[:category][:name])
+        category = Category.find_by(params[:category])
         if !category
           question.categories.build(params[:category])
         else
@@ -41,6 +41,48 @@ class QuestionsController < ApplicationController
       erb :'/questions/edit'
     else
       redirect to "/login"
+    end
+  end
+
+  patch '/questions/:id' do
+    if is_logged_in?
+      question = current_user.questions.find_by_id(params[:id])
+      if question
+        question.update(params[:question])
+        if !params[:category][:name].empty?
+          category = Category.find_by(params[:category])
+          if !category
+            question.categories.build(params[:category])
+          else
+            question.categories << category unless question.categories.include?category
+          end
+        end
+      end
+
+      if question.save
+        redirect to "/questions/#{question.id}"
+      else
+        flash[:message] = "Unable to edit this content."
+        redirect to "/questions"
+      end
+    else
+      flash[:message] = "You need to login to view discount"
+      redirect to "/login"
+    end
+  end
+
+  delete '/questions/:id/delete' do
+    if is_logged_in?
+      question = current_user.questions.find_by_id(params[:id])
+      if question
+        question.delete
+        flash[:message] = "The content was deleted successfully."
+        redirect to "/questions"
+      else
+        flash[:message] = "The content couldn't be deleted."
+        redirect to "/questions"
+      end
+    else
     end
   end
 

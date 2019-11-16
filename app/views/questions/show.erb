@@ -7,3 +7,37 @@
 Categories: <%=categories.join(", ")%>
 
 <a href="/questions/<%=@question.id%>/edit">Edit</a>
+<form action="/questions/<%=@question.id%>/delete" method="post">
+  <input type="hidden" id="hidden" name="_method" value="delete">
+  <input type="submit" value="Delete">
+</form>
+<form action="/questions/<%=@question.id%>/likes" method="post">
+  <% if !@question.likes.find_by(user:current_user) %>
+    <input type="submit" value="Like">
+  <% else %>
+    <input type="hidden" id="hidden" name="_method" value="delete">
+    <input type="submit" value="Unlike">
+  <% end %>
+</form>
+
+<form action="/questions/<%=@question.id%>/answers" method="post">
+    <textarea name="content" rows="8" cols="80" placeholder="Enter your reply here"></textarea>
+    <input type="submit" value="Reply">
+</form>
+
+<% if @question.likes.count>0 %>
+  <% if @question.likes.count==1 %>
+    <%=@question.likes.count%> Like.
+  <% else %>
+    <%=@question.likes.count%> Likes.
+  <% end %>
+<% end %>
+
+<% if @question.answers.count>0 %>
+  <h3>Answers</h3>
+  <ul>
+  <% @question.answers.each do |answer| %>
+    <li><%=answer.user.username %> <%=answer.content%></li>
+  <% end %>
+  </ul>
+<% end %>

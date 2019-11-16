@@ -1,4 +1,3 @@
-require './config/environment'
 require 'securerandom'
 require 'sinatra/flash'
 
