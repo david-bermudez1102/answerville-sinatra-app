@@ -1,15 +1,38 @@
-<% if flash[:message] %>
-<div class="alert alert-danger">
-  <%=flash[:message]%>
+<div class="col-md-5">
+  <% if flash[:message] %>
+  <div class="alert alert-danger">
+    <%=flash[:message]%>
+  </div>
+  <% end %>
+  <div class="card">
+    <div class="card-header bg-primary text-light">
+      <div class="row">
+        <div class="col">
+          <h1 class="card-title display-4">Edit question</h1>
+        </div>
+      </div>
+    </div>
+    <div class="card-body bg-light">
+      <form action="/questions/<%=@question.id%>" method="POST">
+        <input type="hidden" id="hidden" name="_method" value="patch">
+        <div class="form-group">
+          <textarea class="form-control form-control-lg" rows="4" name="question[content]" id="content"><%=@question.content%></textarea>
+        </div>
+        <% if !Category.all.empty? %>
+        <label for="checkbox_group">Pick a category:</label>
+          <% Category.all.each do |category|%>
+          <div id="checkbox_group" class="form-group form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" name="question[category_ids][]" id="<%=category.id%>" value="<%=category.id%>" <%="checked" if @question.categories.include?category%>><label class="form-check-label" for="<%=category.id%>"><%=category.name.downcase.capitalize%></label>
+          </div>
+          <% end %>
+        <% end %>
+        <div class="form-group">
+          <input class="form-control form-control-lg" type="text" name="category[name]" placeholder="Enter a new category">
+        </div>
+        <div class="form-group">
+          <input class="btn btn-lg btn-primary" type="submit" value="Edit Question">
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
-<% end %>
-<form action="/questions/<%=@question.id%>" method="POST">
-  <input type="hidden" id="hidden" name="_method" value="patch">
-  <textarea type="text" name="question[content]" id="content"><%=@question.content%></textarea>
-  <label>Categories</label>
-    <% Category.all.each do |category|%>
-      <input type="checkbox" name="question[category_ids][]" id="<%=category.id%>" value="<%=category.id%>" <%="checked" if @question.categories.include?category%>><%=category.name%>
-    <% end %>
-  <input type="text" name="category[name]" placeholder="Enter a new category">
-  <input type="submit" value="Edit Question">
-</form>

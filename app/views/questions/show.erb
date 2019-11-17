@@ -1,43 +1,96 @@
-<%=@question.content %>
-<%
-  categories = @question.categories.map do |category|
-    category.name
-  end
-%>
-Categories: <%=categories.join(", ")%>
-
-<a href="/questions/<%=@question.id%>/edit">Edit</a>
-<form action="/questions/<%=@question.id%>/delete" method="post">
-  <input type="hidden" id="hidden" name="_method" value="delete">
-  <input type="submit" value="Delete">
-</form>
-<form action="/questions/<%=@question.id%>/likes" method="post">
-  <% if !@question.likes.find_by(user:current_user) %>
-    <input type="submit" value="Like">
-  <% else %>
-    <input type="hidden" id="hidden" name="_method" value="delete">
-    <input type="submit" value="Unlike">
+<div class="col-md-5">
+  <% if flash[:message] %>
+  <div class="alert alert-danger">
+    <%=flash[:message]%>
+  </div>
   <% end %>
-</form>
 
-<form action="/questions/<%=@question.id%>/answers" method="post">
-    <textarea name="content" rows="8" cols="80" placeholder="Enter your reply here"></textarea>
-    <input type="submit" value="Reply">
-</form>
+  <div class="card bg-transparent">
+    <div class="card-header text-light" style="background-color: rgba(0,0,0,0.1);">
+      <div class="row">
+        <div class="col">
+          <h2 class="card-title display-4"><%=@question.content %></h2>
+        </div>
+        <div class="col-3">
+          <div class="row">
+            <div class="col p-0">
+              <form action="/questions/<%=@question.id%>/likes" method="post">
+                <div class="form-group">
+                <% if !@question.likes.find_by(user:current_user) %>
+                  <button class="btn p-0 bg-transparent btn-block text-light" type="submit" title="Like"><%=@question.likes.count%>&nbsp;&nbsp;<i id="like_button" class="fa" aria-hidden="true"></i></button>
+                <% else %>
+                  <input type="hidden" id="hidden" name="_method" value="delete">
+                  <button class="btn p-0 bg-transparent text-light" type="submit" title="Unlike"><%=@question.likes.count%>&nbsp;&nbsp;<i id="unlike_button" class="fa" aria-hidden="true"></i></button>
+                <% end %>
+                </div>
+              </form>
+            </div>
+            <div class="col p-0">
+              <a class="btn bg-transparent p-0 btn-block text-light" href="/questions/<%=@question.id%>/edit" title="Edit Question"><i id="edit_button" class="fa" aria-hidden="true"></i></a>
+            </div>
+            <div class="col p-0">
+              <form action="/questions/<%=@question.id%>" method="post">
+                <input type="hidden" id="hidden" name="_method" value="delete">
+                <div class="form-group">
+                  <button class="btn btn-block p-0 bg-transparent text-light" type="submit" title="Delete Question"><i id="delete_button" class="fa" aria-hidden="true"></i></button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row"><div class="col-12"><small class="card-subtitle">Categories: <%=categories.join(", ")%></small></div></div>
+    </div>
+    <div class="card-body bg-light">
 
-<% if @question.likes.count>0 %>
-  <% if @question.likes.count==1 %>
-    <%=@question.likes.count%> Like.
-  <% else %>
-    <%=@question.likes.count%> Likes.
-  <% end %>
-<% end %>
-
-<% if @question.answers.count>0 %>
-  <h3>Answers</h3>
-  <ul>
-  <% @question.answers.each do |answer| %>
-    <li><%=answer.user.username %> <%=answer.content%></li>
-  <% end %>
-  </ul>
-<% end %>
+      <form action="/questions/<%=@question.id%>/answers" method="post">
+        <div class="form-group">
+          <textarea class="form-control form-control-lg" name="content" rows="5" cols="80" placeholder="Enter your reply here"></textarea>
+        </div>
+        <input class="btn btn-lg send-btn" type="submit" value="Reply">
+      </form>
+    </div>
+    <div class="card-footer" style="background-color: rgba(0,0,0,0.1);">
+      <% if @question.answers.count > 0 %>
+        <h3 class="text-light display-4">Answers</h3>
+        <ul class="list-group text-secondary">
+        <% @question.answers.each do |answer| %>
+          <li class="list-group-item bg-light">
+            <div class="row">
+              <div class="col"><h5 class="card-title"><%=answer.user.username %> wrote:</h5></div>
+            </div>
+            <div class="row bg-white">
+              <div class="col card-text py-2"><%=answer.content%></div>
+            </div>
+            <div class="row">
+              <div class="col">
+                <form action="/answers/<%=answer.id%>/likes" method="post">
+                  <% if !answer.likes.find_by(user:current_user) %>
+                    <button class="btn p-0 bg-transparent text-primary" type="submit" title="Like"><%=answer.likes.count%>&nbsp;&nbsp;<i id="like_button" class="fa" aria-hidden="true"></i></button>
+                  <% else %>
+                    <input type="hidden" id="hidden" name="_method" value="delete">
+                    <button class="btn p-0 bg-transparent text-primary" type="submit" title="Unlike"><%=answer.likes.count%>&nbsp;&nbsp;<i id="unlike_button" class="fa" aria-hidden="true"></i></button>
+                  <% end %>
+                </form>
+              </div>
+                <% if answer.user==current_user %>
+              <div class="col text-center">
+                <a class="btn p-0 bg-transparent text-warning" href="/answers/<%=answer.id%>/edit" title="Edit Question"><i id="edit_button" class="fa" aria-hidden="true"></i></a>
+              </div>
+              <div class="col text-right">
+                <form action="/answers/<%=answer.id%>" method="post">
+                  <input type="hidden" id="hidden" name="_method" value="delete">
+                  <button class="btn bg-transparent text-secondary p-0" type="submit" title="Delete Answer"><i id="delete_button" class="fa" aria-hidden="true"></i></button>
+                </form>
+              </div>
+            </div>
+            <% end %>
+          </li>
+        <% end %>
+        </ul>
+        <% else %>
+        <h4 class="text-light">No answers yet.</h4>
+      <% end %>
+    </div>
+  </div>
+</div>

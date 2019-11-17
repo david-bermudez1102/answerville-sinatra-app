@@ -28,6 +28,9 @@ class QuestionsController < ApplicationController
       end
       if question.save
         redirect to "/questions/#{question.id}"
+      else
+        flash[:message] = "Couldn't post your question. Please try again."
+        redirect to "/questions/new"
       end
     else
       flash[:message] = "You need to login to view discount"
@@ -71,11 +74,11 @@ class QuestionsController < ApplicationController
     end
   end
 
-  delete '/questions/:id/delete' do
+  delete '/questions/:id' do
     if is_logged_in?
       question = current_user.questions.find_by_id(params[:id])
       if question
-        question.delete
+        question.destroy
         flash[:message] = "The content was deleted successfully."
         redirect to "/questions"
       else
@@ -83,6 +86,7 @@ class QuestionsController < ApplicationController
         redirect to "/questions"
       end
     else
+      redirect to "/login"
     end
   end
 

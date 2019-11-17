@@ -1,1 +1,109 @@
-<%=yield %>
+<!doctype html>
+<html>
+  <head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <style>
+      html, body{
+        height:100%;
+        width:100%;
+        position: absolute;
+      }
+      #like_button:before{
+        content:"\f087";
+      }
+      #like_button:hover:before{
+        content:"\f164";
+      }
+      #unlike_button:before{
+        content:"\f164";
+      }
+      #unlike_button:hover:before{
+        content:"\f087";
+      }
+      #edit_button:before{
+        content:"\f040";
+      }
+      #edit_button:hover:before{
+        content:"\f040";
+        color: yellow;
+      }
+      #delete_button:before{
+        content:"\f1f8";
+
+      }
+      #delete_button:hover:before{
+        content:"\f014";
+        color:red;
+      }
+      .rgba-gradient {
+        background: -moz-linear-gradient(45deg, rgba(213, 15, 61, 0.6), rgba(13, 17, 198, 0.69) 100%);
+        background: -webkit-linear-gradient(45deg, rgba(213, 15, 61, 0.6), rgba(13, 17, 198, 0.69) 100%);
+        background: linear-gradient(to 45deg, rgba(213, 15, 61, 0.6), rgba(13, 17, 198, 0.69) 100%);
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+      }
+      .send-btn {
+        border:1px solid rgba(13, 17, 198, 0.69);
+        color:rgba(13, 17, 198, 0.69);
+        background-color: transparent;
+      }
+      .send-btn:hover {
+        background-color: rgba(13, 17, 198, 0.69);
+        color: #fff;
+      }
+    </style>
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <title>Welcome to Answerville!</title>
+  </head>
+  <body class="rgba-gradient">
+    <div class="container-fluid d-flex flex-column" style="min-height:100%;">
+      <header class="row align-items-start">
+      <nav class="col navbar navbar-expand-lg navbar-dark bg-transparent shadow scrolling-navbar">
+        <div class="container">
+    <a class="navbar-brand display-1" style="font-size:32px;" href="/">@nswerville</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
+      <ul class="navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <% if is_logged_in? %>
+        <li class="nav-item">
+          <a class="nav-link" href="/questions/new">New Question</a>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-user"></i>&nbsp;Account
+          </a>
+          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="/users/<%=current_user.username%>">My Profile</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/logout">Logout</a>
+          </div>
+        </li>
+        <% end %>
+      </ul>
+    </div>
+    </div>
+  </nav>
+  </header>
+      <br>
+      <div class="row flex-grow-1 align-items-center justify-content-center bg-transparent">
+          <%=yield%>
+      </div>
+      <footer class="page-footer row bg-light">
+        <div class="footer-copyright py-3 w-100">
+          <div class="container">
+            Answerville © <%=Date.today.year%>
+          </div>
+        </div>
+      </footer>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+  </body>
+</html>

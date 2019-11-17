@@ -1,16 +1,37 @@
-<% if flash[:message] %>
-<div class="alert alert-danger">
-  <%=flash[:message]%>
-</div>
-<% end %>
-<form action="/questions" method="POST">
-  <textarea type="text" name="question[content]" id="content" placeholder="Type your question here. Maximum 500 characters."></textarea>
-  <% if !Category.all.empty? %>
-  <label>Pick a category</label>
-    <% Category.all.each do |category|%>
-      <input type="checkbox" name="question[category_ids][]" id="<%=category.id%>" value="<%=category.id%>"><%=category.name%>
-    <% end %>
+<div class="col-md-5">
+  <% if flash[:message] %>
+  <div class="alert alert-danger">
+    <%=flash[:message]%>
+  </div>
   <% end %>
-  <input type="text" name="category[name]" placeholder="Enter a new category">
-  <input type="submit" value="Question!">
-</form>
+  <div class="card bg-transparent">
+    <div class="card-header text-light" style="background-color: rgba(0,0,0,0.1);">
+      <div class="row">
+        <div class="col">
+          <h1 class="card-title display-4">Create a new question</h1>
+        </div>
+      </div>
+    </div>
+    <div class="card-body bg-light">
+      <form action="/questions" method="POST">
+        <div class="form-group">
+          <textarea class="form-control form-control-lg" rows="4" name="question[content]" id="content" placeholder="Type your question here. Maximum 500 characters."></textarea>
+        </div>
+        <% if !Category.all.empty? %>
+        <label for="checkbox_group">Pick a category:</label>
+          <% Category.all.each do |category|%>
+          <div id="checkbox_group" class="form-group form-check form-check-inline">
+            <input class="form-check-input" type="checkbox" name="question[category_ids][]" id="<%=category.id%>" value="<%=category.id%>"><label class="form-check-label" for="<%=category.id%>"><%=category.name.downcase.capitalize%></label>
+          </div>
+          <% end %>
+        <% end %>
+        <div class="form-group">
+          <input class="form-control form-control-lg" type="text" name="category[name]" placeholder="Enter a new category">
+        </div>
+        <div class="form-group">
+          <input class="btn btn-lg send-btn" type="submit" value="Question">
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

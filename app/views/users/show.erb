@@ -1,0 +1,63 @@
+<div class="col-md-9">
+  <% if flash[:message] %>
+  <div class="alert alert-danger">
+    <%=flash[:message]%>
+  </div>
+  <% end %>
+  <div class="container text-light">
+    <div class="row">
+      <div class="col" style="background-color: rgba(0,0,0,0.1);">
+        <div class="row">
+          <div class="col text-center">
+            <h1 class="card-title display-4" style="border-bottom:4px solid rgba(0,0,0,0.1);"><%=current_user.name%></h1>
+            <i class="fa fa-user" aria-hidden="true" style="font-size: 140px;"></i>
+          </div>
+          <div class="w-100"></div>
+          <div class="col py-2 display-4" style="font-size:20px;border-top:4px solid rgba(0,0,0,0.1);background-color: rgba(0,0,0,0.1);">
+            <i class="fa fa-th-list" aria-hidden="true"></i>
+            My Questions
+          </div>
+          <div class="w-100" ></div>
+          <div class="col py-2 display-4" style="font-size:20px;border-top:4px solid rgba(0,0,0,0.1);background-color: rgba(0,0,0,0.1);">
+            <i class="fa fa-users" aria-hidden="true"></i>
+            Followers
+          </div>
+          <div class="w-100"></div>
+          <div class="col py-2 display-4" style="font-size:20px;border-top:4px solid rgba(0,0,0,0.1);background-color: rgba(0,0,0,0.1);">
+            <i class="fa fa-user-plus" aria-hidden="true"></i>
+            Following
+          </div>
+          <div class="w-100"></div>
+          <div class="col py-2 display-4" style="font-size:20px;border-top:4px solid rgba(0,0,0,0.1);background-color: rgba(0,0,0,0.1);">
+            <i class="fa fa-heart" aria-hidden="true"></i>
+            Liked
+          </div>
+        </div>
+      </div>
+      <div class="col-9">
+        <div class="col py-3 display-4 text-center" style="border-bottom:4px solid rgba(0,0,0,0.1);background-color: rgba(0,0,0,0.1);">
+          <i class="fa fa-th-list" aria-hidden="true"></i>
+          Questions you have asked
+        </div>
+        <div class="w-100"></div>
+        <ul class="list-group bg-transparent">
+          <% current_user.questions.order(id: :desc).each do |question| %>
+          <li class="list-group-item border border-0" style="background-color: rgba(0,0,0,0.1);">
+            <blockquote>
+              <a href="/questions/<%= question.id %>" class="card-link blockquote text-light"><%=question.content%></a>
+              <footer class="text-muted row text-light">
+                <div class="col text-light">
+                  <small>Created by <cite><%=question.user.username%></cite></small>
+                </div>
+                <div class="col text-right text-light">
+                  <small><%=Helpers.distance_of_time_in_words(question.created_at.to_i)%> ago.</small>
+                </div>
+              </footer>
+            </blockquote>
+          </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

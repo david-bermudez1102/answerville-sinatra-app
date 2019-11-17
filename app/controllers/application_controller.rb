@@ -1,6 +1,6 @@
 require 'securerandom'
 require 'sinatra/flash'
-
+require_relative '../helpers/helpers.rb'
 class ApplicationController < Sinatra::Base
   configure do
     set :public_folder, 'public'
@@ -17,6 +17,22 @@ class ApplicationController < Sinatra::Base
 
     def current_user
       User.find(session[:user_id])
+    end
+
+    def likes(o)
+      if o.likes.count>0
+        if o.likes.count==1
+          "#{o.likes.count} Like."
+        else
+          "#{o.likes.count} Likes."
+        end
+      end
+    end
+
+    def categories
+      categories = @question.categories.map do |category|
+        category.name.downcase.capitalize
+      end
     end
   end
 end
