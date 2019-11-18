@@ -29,11 +29,11 @@ class QuestionsController < ApplicationController
       if question.save
         redirect to "/questions/#{question.id}"
       else
-        flash[:message] = "Couldn't post your question. Please try again."
+        flash[:error] = "Couldn't post your question. Please try again."
         redirect to "/questions/new"
       end
     else
-      flash[:message] = "You need to login to view discount"
+      flash[:error] = "You need to login to view discount"
       redirect to "/login"
     end
   end
@@ -65,11 +65,11 @@ class QuestionsController < ApplicationController
       if question.save
         redirect to "/questions/#{question.id}"
       else
-        flash[:message] = "Unable to edit this content."
+        flash[:error] = "Unable to edit this content."
         redirect to "/questions"
       end
     else
-      flash[:message] = "You need to login to view discount"
+      flash[:error] = "You need to login to view discount"
       redirect to "/login"
     end
   end
@@ -79,13 +79,14 @@ class QuestionsController < ApplicationController
       question = current_user.questions.find_by_id(params[:id])
       if question
         question.destroy
-        flash[:message] = "The content was deleted successfully."
+        flash[:error] = "The content was deleted successfully."
         redirect to "/questions"
       else
-        flash[:message] = "The content couldn't be deleted."
+        flash[:error] = "The content couldn't be deleted."
         redirect to "/questions"
       end
     else
+      flash[:error] = "You need to login to view this content."
       redirect to "/login"
     end
   end
@@ -96,7 +97,7 @@ class QuestionsController < ApplicationController
       if @question
         erb :'/questions/show'
       else
-        flash[:message] = "The content does not exist."
+        flash[:error] = "The content couldn't be deleted."
         redirect to "/questions"
       end
     else

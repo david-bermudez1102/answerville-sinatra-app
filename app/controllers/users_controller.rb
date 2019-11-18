@@ -1,6 +1,10 @@
 class UsersController < ApplicationController
   get '/signup' do
-    erb :'/users/new'
+    if is_logged_in?
+      redirect to "/questions"
+    else
+      erb :'/users/new'
+    end
   end
 
   post '/signup' do

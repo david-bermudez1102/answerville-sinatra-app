@@ -1,7 +1,7 @@
 <div class="col-md-9">
-  <% if flash[:message] %>
+  <% if flash[:error] %>
   <div class="alert alert-danger">
-    <%=flash[:message]%>
+    <%=flash[:error]%>
   </div>
   <% end %>
   <div class="container text-light">

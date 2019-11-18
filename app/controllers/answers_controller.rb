@@ -13,13 +13,38 @@ class AnswersController < ApplicationController
       answer = current_user.answers.find_by_id(params[:id])
       if answer
         answer.delete
-        flash[:message] = "The answer was deleted successfully."
+        flash[:error] = "The answer was deleted successfully."
         redirect to "/questions/#{answer.question.id}"
       else
-        flash[:message] = "The content couldn't be deleted."
+        flash[:error] = "The content couldn't be deleted."
         redirect to "/questions"
       end
     else
+      redirect to "/login"
+    end
+  end
+
+  get '/answers/:id/edit' do
+    @answer = Answer.find_by_id(params[:id])
+    erb :'/answers/edit'
+  end
+
+  patch '/answers/:id' do
+    if is_logged_in?
+      answer = current_user.answers.find_by_id(params[:id])
+      if answer
+        answer.update(params[:answer])
+      end
+
+      if answer.save
+        flash[:success] = "Your answer was updated successfully."
+        redirect to "/questions/#{answer.question.id}"
+      else
+        flash[:error] = "Unable to edit this content."
+        redirect to "/questions"
+      end
+    else
+      flash[:error] = "You need to login to view discount"
       redirect to "/login"
     end
   end

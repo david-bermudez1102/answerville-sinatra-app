@@ -10,6 +10,14 @@ class ApplicationController < Sinatra::Base
     set :session_secret, 'password_security'
   end
 
+  get "/" do
+    if is_logged_in?
+      redirect to "/questions"
+    else
+      erb :index
+    end
+  end
+
   helpers do
     def is_logged_in?
       !!session[:user_id]

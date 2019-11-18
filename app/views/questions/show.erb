@@ -1,7 +1,12 @@
 <div class="col-md-5">
-  <% if flash[:message] %>
+  <% if flash[:error] %>
   <div class="alert alert-danger">
-    <%=flash[:message]%>
+    <%=flash[:error]%>
+  </div>
+  <% end %>
+  <% if flash[:success] %>
+  <div class="alert alert-success">
+    <%=flash[:success]%>
   </div>
   <% end %>
 
@@ -57,7 +62,14 @@
         <% @question.answers.each do |answer| %>
           <li class="list-group-item bg-light">
             <div class="row">
-              <div class="col"><h5 class="card-title"><%=answer.user.username %> wrote:</h5></div>
+              <div class="col">
+                <h5 class="card-title">
+                  <i class="fa fa-user color-light" aria-hidden="true"></i>
+                  <%=answer.user.username %> wrote
+                </h5>
+              </div>
+              <div class="col-8 text-right"><small>Created <%=Helpers.distance_of_time_in_words(answer.created_at.to_i)%> ago. Updated <%=Helpers.distance_of_time_in_words(answer.updated_at.to_i)%> ago.</small></div>
+
             </div>
             <div class="row bg-white">
               <div class="col card-text py-2"><%=answer.content%></div>
@@ -75,7 +87,7 @@
               </div>
                 <% if answer.user==current_user %>
               <div class="col text-center">
-                <a class="btn p-0 bg-transparent text-warning" href="/answers/<%=answer.id%>/edit" title="Edit Question"><i id="edit_button" class="fa" aria-hidden="true"></i></a>
+                <a class="btn p-0 bg-transparent text-warning" href="/answers/<%=answer.id%>/edit" title="Edit Answer"><i id="edit_button" class="fa" aria-hidden="true"></i></a>
               </div>
               <div class="col text-right">
                 <form action="/answers/<%=answer.id%>" method="post">
