@@ -1,12 +1,37 @@
-<% if flash[:message] %>
-<div class="alert alert-danger">
-  <%=flash[:message]%>
+<div class="col-md-4">
+  <% if flash[:error] %>
+  <div class="alert alert-danger">
+    <%=flash[:error]%>
+  </div>
+  <% end %>
+  <div class="card bg-transparent border-0">
+    <div class="card-header text-light border-0" style="background-color: rgba(0,0,0,0.1);">
+      <div class="row">
+        <div class="col text-center">
+          <h1 class="card-title display-4">
+            <i class="fa fa-sign-in" aria-hidden="true"></i>
+            Login
+          </h1>
+        </div>
+      </div>
+    </div>
+    <div class="card-body bg-transparent text-light px-0">
+      <form action="/login" method="POST">
+        <div class="form-group list-group-item border-0 px-5" style="background-color: rgba(0,0,0,0.1);">
+          <label class="form-label display-4" style="font-size:22px;" for="username">Username</label>
+          <input class="form-control form-control-lg" type="text" name="username" id="username" placeholder="Your username">
+        </div>
+        <div class="form-group list-group-item border-0 px-5" style="background-color: rgba(0,0,0,0.1);">
+          <label class="form-label display-4" style="font-size:22px;" for="password">Password</label>
+          <input class="form-control form-control-lg" type="password" name="password" id="password" placeholder="Your password">
+        </div>
+        <div class="form-group list-group-item border-0 text-center" style="background-color: rgba(0,0,0,0.1);">
+          <input class="btn btn-lg send-btn" style="color:#fff;border:2px solid #fff;" type="submit" value="Login">
+        </div>
+        <div class="form-group list-group-item border-0 text-center" style="background-color: rgba(0,0,0,0.1);">
+          <small><a href="/signup" class="card-link text-light">Don't have an account? Sign up here.</a></small>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
-<% end %>
-<form action="/login" method="POST">
-  <label for="username">Username</label>
-  <input type="text" name="username" id="username" placeholder="Your username">
-  <label for="password">Password</label>
-  <input type="password" name="password" id="password" placeholder="Your password">
-  <input type="submit" value="Login">
-</form>

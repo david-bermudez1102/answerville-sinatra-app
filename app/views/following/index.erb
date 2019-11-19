@@ -1,0 +1,51 @@
+<div class="col-md-5">
+  <% if flash[:error] %>
+  <div class="alert alert-danger">
+    <%=flash[:error]%>
+  </div>
+  <% end %>
+  <% if flash[:success] %>
+  <div class="alert alert-success">
+    <%=flash[:success]%>
+  </div>
+  <% end %>
+
+  <div class="card bg-transparent">
+    <div class="card-header text-light" style="background-color: rgba(0,0,0,0.1);">
+      <div class="row">
+        <div class="col text-center">
+          <h2 class="card-title display-4 " style="font-size:46px;"><i class="fa fa-users" aria-hidden="true"></i>
+            People <a href="/users/<%= current_user.username %>" class="card-link text-light">you</a> are following
+          </h2>
+        </div>
+      </div>
+    </div>
+    <div class="card-body align-items-center text-center" style="background-color: rgba(0,0,0,0.1);">
+      <% if current_user.following.count > 0 %>
+        <ul class="list-group text-secondary">
+        <% current_user.following.each do |following| %>
+          <li class="list-group-item bg-light">
+            <div class="row">
+              <div class="col my-auto text-left">
+                <h5 class="card-title my-auto display-4" style="font-size:32px;">
+                  <a href="/users/<%= following.username %>" class="card-link text-secondary">
+                    <%= following.name %> - <%= following.username %>
+                  </a>
+                </h5>
+              </div>
+              <div class="col-3 text-right">
+                <form action="/followers/<%=following.username%>" method="post">
+                  <input type="hidden" name="_method" value="delete">
+                  <button class="btn btn-lg send-btn" type="submit">Unfollow</button>
+                </form>
+              </div>
+            </div>
+          </li>
+          <% end %>
+        </ul>
+        <% else %>
+        <h4 class="text-light">Not following anyone yet. Start following people to make @answerville more fun!</h4>
+      <% end %>
+    </div>
+  </div>
+</div>

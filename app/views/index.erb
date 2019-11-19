@@ -1,0 +1,28 @@
+<div class="col-md-8">
+  <% if flash[:error] %>
+  <div class="alert alert-danger">
+    <%=flash[:error]%>
+  </div>
+  <% end %>
+  <div class="card bg-transparent border-0 p-0">
+    <div class="card-header text-light border-0" style="background-color: rgba(0,0,0,0.1);">
+      <div class="row">
+        <div class="col text-center">
+          <h1 class="card-title display-3">
+            Hey! Welcome to @nswerville
+          </h1>
+        </div>
+      </div>
+    </div>
+    <div class="card-body bg-transparent text-light p-0">
+        <div class="list-group-item border-0 px-5 text-center" style="background-color: rgba(0,0,0,0.1);">
+          <h2 class="card-subtitle display-4" style="font-size:36px;">A place where you can ask and anybody can answer</h2>
+        </div>
+        <div class="list-group-item py-4 text-center" style="background-color: rgba(0,0,0,0.1);">
+          <div class="container-fluid align-items-center" style="display:flex;width:40%;justify-content:space-between;">
+            <a href="/login" class="btn btn-lg send-btn" style="color:#fff;border:2px solid #fff;">Login</a> or <a href="/signup" class="btn btn-lg send-btn" style="color:#fff;border:2px solid #fff;">Signup</a>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>

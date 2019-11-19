@@ -9,23 +9,37 @@
       <div class="col" style="background-color: rgba(0,0,0,0.1);">
         <div class="row">
           <div class="col text-center">
-            <h1 class="card-title display-4" style="border-bottom:4px solid rgba(0,0,0,0.1);"><%=current_user.name%></h1>
+            <h1 class="card-title display-4" style="border-bottom:4px solid rgba(0,0,0,0.1);"><%=@user.name%></h1>
             <i class="fa fa-user" aria-hidden="true" style="font-size: 140px;"></i>
+            <% if @user != current_user %>
+              <% if !@user.followers.include?current_user %>
+              <form action="/followers" method="post">
+                <input type="hidden" name="username" value="<%=@user.username%>">
+                <button class="btn btn-lg btn-block send-btn" style="color:#fff;border:2px solid #fff;" type="submit">Follow</button>
+              </form>
+              <% else %>
+              <form action="/followers/<%=@user.username%>" method="post">
+                <input type="hidden" name="_method" value="delete">
+                <button class="btn btn-lg btn-block send-btn" style="color:#fff;border:2px solid #fff;" type="submit">Unfollow</button>
+              </form>
+              <% end %>
+            </br>
+            <% end %>
           </div>
           <div class="w-100"></div>
           <div class="col py-2 display-4" style="font-size:20px;border-top:4px solid rgba(0,0,0,0.1);background-color: rgba(0,0,0,0.1);">
             <i class="fa fa-th-list" aria-hidden="true"></i>
-            My Questions
+            <%= @user != current_user ? "#{@user.name}" : "My"%> Questions (<%=@user.questions.count%>)
           </div>
           <div class="w-100" ></div>
           <div class="col py-2 display-4" style="font-size:20px;border-top:4px solid rgba(0,0,0,0.1);background-color: rgba(0,0,0,0.1);">
             <i class="fa fa-users" aria-hidden="true"></i>
-            Followers
+            <a class="card-link text-light" href="<%= @user==current_user ? "/followers" : "/followers/#{@user.username}" %>">Followers (<%=@user.followers.count%>)</a>
           </div>
           <div class="w-100"></div>
           <div class="col py-2 display-4" style="font-size:20px;border-top:4px solid rgba(0,0,0,0.1);background-color: rgba(0,0,0,0.1);">
             <i class="fa fa-user-plus" aria-hidden="true"></i>
-            Following
+            <a class="card-link text-light" href="<%= @user==current_user ? "/following" : "/following/#{@user.username}" %>">Following (<%=@user.following.count%>)</a>
           </div>
           <div class="w-100"></div>
           <div class="col py-2 display-4" style="font-size:20px;border-top:4px solid rgba(0,0,0,0.1);background-color: rgba(0,0,0,0.1);">
@@ -35,13 +49,13 @@
         </div>
       </div>
       <div class="col-9">
-        <div class="col py-3 display-4 text-center" style="border-bottom:4px solid rgba(0,0,0,0.1);background-color: rgba(0,0,0,0.1);">
+        <div class="col py-3 display-4 text-center" style="font-size:42px;border-bottom:4px solid rgba(0,0,0,0.1);background-color: rgba(0,0,0,0.1);">
           <i class="fa fa-th-list" aria-hidden="true"></i>
-          Questions you have asked
+          Questions <%= @user != current_user ? "#{@user.name} has" : "you have"%> asked
         </div>
         <div class="w-100"></div>
         <ul class="list-group bg-transparent">
-          <% current_user.questions.order(id: :desc).each do |question| %>
+          <% @user.questions.order(id: :desc).each do |question| %>
           <li class="list-group-item border border-0" style="background-color: rgba(0,0,0,0.1);">
             <blockquote>
               <a href="/questions/<%= question.id %>" class="card-link blockquote text-light"><%=question.content%></a>

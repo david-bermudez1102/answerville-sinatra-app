@@ -9,4 +9,5 @@ use AnswersController
 use UsersController
 use QuestionsController
 use LikesController
+use ConnectionsController
 run ApplicationController

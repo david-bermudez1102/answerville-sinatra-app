@@ -1,0 +1,62 @@
+<div class="col-md-5">
+  <% if flash[:error] %>
+  <div class="alert alert-danger">
+    <%=flash[:error]%>
+  </div>
+  <% end %>
+  <% if flash[:success] %>
+  <div class="alert alert-success">
+    <%=flash[:success]%>
+  </div>
+  <% end %>
+
+  <div class="card bg-transparent">
+    <div class="card-header text-light" style="background-color: rgba(0,0,0,0.1);">
+      <div class="row">
+        <div class="col text-center">
+          <h2 class="card-title display-4" style="font-size:38px;"><i class="fa fa-users" aria-hidden="true"></i>
+            People <a href="/users/<%= @user.username %>" class="card-link text-light"><%= @user.name %></a> follows
+          </h2>
+        </div>
+      </div>
+    </div>
+    <div class="card-body align-items-center text-center" style="background-color: rgba(0,0,0,0.1);">
+      <% if @user.following.count > 0 %>
+        <ul class="list-group text-secondary">
+        <% @user.following.each do |following| %>
+          <li class="list-group-item bg-light">
+            <div class="row">
+              <div class="col my-auto">
+                <h5 class="card-title my-auto">
+                  <a href="/users/<%= following.username %>" class="card-link text-secondary">
+                    <%= following.name %> - <%= following.username %>
+                  </a>
+                  <% if @user != current_user %>
+                    <% if !@user.followers.include?current_user %>
+                    <form action="/followers" method="post">
+                      <input type="hidden" name="username" value="<%=@user.username%>">
+                      <button class="btn btn-lg btn-block send-btn" style="color:#fff;border:2px solid #fff;" type="submit">Follow</button>
+                    </form>
+                    <% else %>
+                    <form action="/followers/<%=@user.username%>" method="post">
+                      <input type="hidden" name="_method" value="delete">
+                      <button class="btn btn-lg btn-block send-btn" style="color:#fff;border:2px solid #fff;" type="submit">Unfollow</button>
+                    </form>
+                    <% end %>
+                  <% end %>
+                </h5>
+              </div>
+            </div>
+          </li>
+          <% end %>
+        </ul>
+        <% else %>
+          <% if @user!=current_user %>
+          <h4 class="text-light"><%= @user.name %></a> is not following anyone yet. Try suggesting them to follow you!</h4>
+          <% else %>
+          <h4 class="text-light">Not following anyone yet. Start following people to make @answerville more fun!</h4>
+          <% end %>
+      <% end %>
+    </div>
+  </div>
+</div>
