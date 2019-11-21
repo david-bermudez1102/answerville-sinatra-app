@@ -10,4 +10,5 @@ use UsersController
 use QuestionsController
 use LikesController
 use ConnectionsController
+use SearchesController
 run ApplicationController

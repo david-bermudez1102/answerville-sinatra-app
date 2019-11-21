@@ -1,0 +1,59 @@
+<div class="col-md-7">
+  <% if flash[:error] %>
+  <div class="alert alert-danger">
+    <%=flash[:error]%>
+  </div>
+  <% end %>
+  <div class="card bg-transparent border-0 border-radius-0">
+    <div class="card-header bg-transparent text-light border-0">
+      <div class="row">
+        <div class="col text-center">
+          <% if @users.empty? && @questions.empty? %>
+          <h1 class="card-title display-3">No results found for "<%=params[:q]%>". Try again!</h1>
+          <% else %>
+          <h1 class="card-title display-3">Results for "<%=params[:q]%>"</h1>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="card-body bg-transparent">
+      <% if !@users.empty? %>
+      <ul class="list-group bg-transparent">
+        <li class="list-group-item text-light bg-transparent display-4 border border-bottom-0 border-left-0 border-right-0 border-top-1">
+          People (<%=@users.count%>)
+        </li>
+        <% end %>
+        <% @users.each do |user| %>
+        <li class="list-group-item display-4 text-center" style="font-size:36px; background-color: rgba(0,0,0,0.1);border-top:1px solid rgba(0,0,0,0.1);">
+            <a href="/user/<%= user.username %>" class="card-link text-light">
+              <i class="fa fa-user" aria-hidden="true"></i>
+              <%=user.name%> - @<%=user.username%>
+            </a>
+        </li>
+      </ul>
+      <% end %>
+      <% if !@questions.empty? %>
+      <ul class="list-group bg-transparent">
+        <li class="list-group-item text-light bg-transparent display-4 border border-bottom-0 border-left-0 border-right-0 border-top-1">
+          Questions (<%=@questions.count%>)
+        </li>
+        <% end %>
+        <% @questions.each do |question| %>
+        <li class="list-group-item" style="background-color: rgba(0,0,0,0.1);border-top:1px solid rgba(0,0,0,0.1);">
+          <blockquote>
+            <a href="/questions/<%= question.id %>" class="card-link blockquote text-light"><%=question.content%></a>
+            <footer class="text-muted row text-light">
+              <div class="col text-light">
+                Created by <cite><%=question.user.username%></cite>
+              </div>
+              <div class="col text-right text-light">
+                <small><%=Helpers.distance_of_time_in_words(question.created_at.to_i)%> ago.</small>
+              </div>
+            </footer>
+          </blockquote>
+        </li>
+      </ul>
+      <% end %>
+    </div>
+  </div>
+</div>

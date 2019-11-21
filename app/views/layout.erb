@@ -8,8 +8,8 @@
 </head>
 <body class="rgba-gradient">
   <div class="container-fluid d-flex flex-column" style="min-height:100%;">
-    <header class="row align-items-start">
-      <nav class="col navbar navbar-expand-lg navbar-dark bg-transparent shadow scrolling-navbar">
+    <header class="row">
+      <nav class="col navbar navbar-expand-lg navbar-dark bg-transparent shadow scrolling-navbar align-items-center">
         <div class="container">
           <a class="navbar-brand display-1" style="font-size:32px;" href="/">@nswerville</a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -17,7 +17,19 @@
           </button>
 
           <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-            <ul class="navbar-nav">
+            <ul class="navbar-nav d-flex align-items-center">
+              <% if is_logged_in? %>
+              <li class="nav-item">
+                <form class="" action="/search" method="get">
+                  <div class="input-group">
+                    <input type="text" name="q" class="form-control" placeholder="Search Content" aria-label="Search Content" aria-describedby="search-addon2">
+                    <div class="input-group-append">
+                      <button type="submit" class="btn btn-outline-light text-light" id="search-addon2"><i class="fa fa-search" aria-hidden="true"></i></button>
+                    </div>
+                  </div>
+                </form>
+              </li>
+              <% end %>
               <li class="nav-item active">
                 <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
               </li>
