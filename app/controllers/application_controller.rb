@@ -42,5 +42,17 @@ class ApplicationController < Sinatra::Base
         category.name.downcase.capitalize
       end
     end
+
+    def err(o)
+      message = []
+      message << "<ul class='my-auto'>"
+      message += o.errors.messages.map do |key,value|
+        value.map do |error|
+          "<li>#{key.capitalize} #{error}</li>"
+        end
+      end
+      message << "</ul>"
+      message.join
+    end
   end
 end

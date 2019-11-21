@@ -1,0 +1,49 @@
+html, body{
+  height:100%;
+  width:100%;
+  position: absolute;
+}
+#like_button:before{
+  content:"\f087";
+}
+#like_button:hover:before{
+  content:"\f164";
+}
+#unlike_button:before{
+  content:"\f164";
+}
+#unlike_button:hover:before{
+  content:"\f087";
+}
+#edit_button:before{
+  content:"\f040";
+}
+#edit_button:hover:before{
+  content:"\f040";
+  color: yellow;
+}
+#delete_button:before{
+  content:"\f1f8";
+
+}
+#delete_button:hover:before{
+  content:"\f014";
+  color:red;
+}
+.rgba-gradient {
+  background: -moz-linear-gradient(45deg, rgba(213, 15, 61, 0.6), rgba(13, 17, 198, 0.69) 100%);
+  background: -webkit-linear-gradient(45deg, rgba(213, 15, 61, 0.6), rgba(13, 17, 198, 0.69) 100%);
+  background: linear-gradient(to 45deg, rgba(213, 15, 61, 0.6), rgba(13, 17, 198, 0.69) 100%);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+.send-btn {
+  border:1px solid rgba(13, 17, 198, 0.69);
+  color:rgba(13, 17, 198, 0.69);
+  background-color: transparent;
+  border-radius:40px;
+}
+.send-btn:hover {
+  background-color: rgba(13, 17, 198, 0.69);
+  color: #fff;
+}

@@ -29,7 +29,12 @@
           <div class="w-100"></div>
           <div class="col py-2 display-4" style="font-size:20px;border-top:4px solid rgba(0,0,0,0.1);background-color: rgba(0,0,0,0.1);">
             <i class="fa fa-th-list" aria-hidden="true"></i>
-            <%= @user != current_user ? "#{@user.name}" : "My"%> Questions (<%=@user.questions.count%>)
+            <a href="#" class="card-link text-light"><%= @user != current_user ? "#{@user.name}" : "My"%> Questions (<%=@user.questions.count%>)</a>
+          </div>
+          <div class="w-100" ></div>
+          <div class="col py-2 display-4" style="font-size:20px;border-top:4px solid rgba(0,0,0,0.1);background-color: rgba(0,0,0,0.1);">
+            <i class="fa fa-comments" aria-hidden="true"></i>
+            <a class="card-link text-light" href="/users/<%=@user.username%>/answers"><%= @user != current_user ? "#{@user.name}" : "My"%> answers (<%=@user.answers.count%>)</a>
           </div>
           <div class="w-100" ></div>
           <div class="col py-2 display-4" style="font-size:20px;border-top:4px solid rgba(0,0,0,0.1);background-color: rgba(0,0,0,0.1);">

@@ -4,6 +4,11 @@
     <%=flash[:error]%>
   </div>
   <% end %>
+  <% if flash[:success] %>
+  <div class="alert alert-success">
+    <%=flash[:success]%>
+  </div>
+  <% end %>
   <div class="card bg-transparent border-0">
     <div class="card-header text-light border-0" style="background-color: rgba(0,0,0,0.1);">
       <div class="row">

@@ -29,7 +29,7 @@ class QuestionsController < ApplicationController
       if question.save
         redirect to "/questions/#{question.id}"
       else
-        flash[:error] = "Couldn't post your question. Please try again."
+        flash[:error] = err(question)
         redirect to "/questions/new"
       end
     else

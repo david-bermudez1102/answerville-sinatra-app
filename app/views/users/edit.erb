@@ -1,4 +1,4 @@
-<div class="col-md-4">
+<div class="col-md-5">
   <% if flash[:error] %>
   <div class="alert alert-danger" >
     <%=flash[:error]%>
@@ -9,35 +9,40 @@
       <div class="row">
         <div class="col text-center">
           <h1 class="card-title display-4">
-            <i class="fa fa-sign-in" aria-hidden="true"></i>
-            Sign Up
+            <i class="fa fa-edit" aria-hidden="true"></i>
+            Edit information
           </h1>
         </div>
       </div>
     </div>
     <div class="card-body bg-transparent text-light px-0">
-      <form action="/signup" method="POST">
+      <form action="/users/<%=current_user.username%>" method="POST">
+        <input type="hidden" id="hidden" name="_method" value="patch">
         <div class="form-group list-group-item border-0 px-5" style="background-color: rgba(0,0,0,0.1);">
           <label class="form-label display-4" style="font-size:22px;" for="name">Name</label>
-          <input class="form-control form-control-lg" type="text" name="name" id="name" placeholder="Your name">
+          <input class="form-control form-control-lg" type="text" name="user[name]" id="name" value="<%=current_user.name%>">
         </div>
         <div class="form-group list-group-item border-0 px-5" style="background-color: rgba(0,0,0,0.1);">
           <label class="form-label display-4" style="font-size:22px;" for="username">Username</label>
-          <input class="form-control form-control-lg" type="text" name="username" id="username" placeholder="Your username">
+          <input class="form-control form-control-lg" type="text" name="user[username]" id="username" value="<%=current_user.username%>">
         </div>
         <div class="form-group list-group-item border-0 px-5" style="background-color: rgba(0,0,0,0.1);">
           <label class="form-label display-4" style="font-size:22px;" for="email">Email</label>
-          <input class="form-control form-control-lg" type="text" name="email" id="email" placeholder="Your email">
+          <input class="form-control form-control-lg" type="text" name="user[email]" id="email" value="<%=current_user.email%>">
+        </div>
+        <div class="form-group list-group-item border-0 px-5" style="background-color: rgba(0,0,0,0.1);">
+          <label class="form-label display-4" style="font-size:22px;" for="new_password">New Password</label>
+          <input class="form-control form-control-lg" type="password" name="new_password" id="new_password" placeholder="Enter a new password">
         </div>
         <div class="form-group list-group-item border-0 px-5" style="background-color: rgba(0,0,0,0.1);">
           <label class="form-label display-4" style="font-size:22px;" for="password">Password</label>
-          <input class="form-control form-control-lg" type="password" name="password" id="password" placeholder="Your password">
+          <input class="form-control form-control-lg" type="password" name="user[password]" id="password" placeholder="Enter your current password to save the changes">
         </div>
         <div class="form-group list-group-item border-0 text-center" style="background-color: rgba(0,0,0,0.1);">
-          <input class="btn btn-lg send-btn" style="color:#fff;border:2px solid #fff;" type="submit" value="Sign Up">
+          <input class="btn btn-lg send-btn" style="color:#fff;border:2px solid #fff;" type="submit" value="Edit information">
         </div>
         <div class="form-group list-group-item border-0 text-center" style="background-color: rgba(0,0,0,0.1);">
-          <small><a href="/login" class="card-link text-light">Already have an account? Login here.</a></small>
+          <small>You'll be logout once you change any of your information</small>
         </div>
       </form>
     </div>

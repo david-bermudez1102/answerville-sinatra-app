@@ -1,0 +1,73 @@
+<div class="col-md-7">
+  <% if flash[:error] %>
+  <div class="alert alert-danger">
+    <%=flash[:error]%>
+  </div>
+  <% end %>
+  <div class="card bg-transparent border-0 border-radius-0">
+    <div class="card-header bg-transparent text-light border-0">
+      <div class="row">
+        <div class="col text-center">
+          <h1 class="card-title display-4">
+            <i class="fa fa-comments" aria-hidden="true"></i>
+            Questions <%= @user != current_user ? "#{@user.name} has" : "you have"%> answered</h1>
+        </div>
+      </div>
+    </div>
+    <div class="card-body bg-transparent">
+        <% if @user.answers.empty? %>
+        <ul class="list-group bg-transparent">
+          <li class="list-group-item text-light text-center" style="background-color: rgba(0,0,0,0.1);border-top:1px solid rgba(0,0,0,0.1);">
+            <a href="/questions" class="card-link text-light"><%= @user != current_user ? "#{@user.name} hasn't" : "You haven't"%> answered any question yet. Click here to start answering questions!</a>
+          </li>
+        </ul>
+        <% end %>
+        <% @user.answers.order(id: :desc).group(:question).count.each do |question,c| %>
+        <ul class="list-group bg-transparent">
+          <li class="list-group-item" style="background-color: rgba(0,0,0,0.1);border-top:1px solid rgba(0,0,0,0.1);">
+            <blockquote>
+              <ul class="list-group">
+                <% question.answers.order(id: :desc).each do |answer| %>
+                <li class="list-group-item text-secondary">
+                  <div class="row">
+                    <div class="col">
+                      <a href="/questions/<%= answer.question.id %>" class="card-link blockquote text-secondary"><%=answer.content%></a>
+                      <small><%=Helpers.distance_of_time_in_words(answer.created_at.to_i)%> ago.</small>
+                    </div>
+                    <div class="col-1">
+                      <form action="/answers/<%=answer.id%>/likes" method="post">
+                        <% if !answer.likes.find_by(user:current_user) %>
+                          <button class="btn p-0 bg-transparent text-primary" type="submit" title="Like"><%=answer.likes.count%>&nbsp;&nbsp;<i id="like_button" class="fa" aria-hidden="true"></i></button>
+                        <% else %>
+                          <input type="hidden" id="hidden" name="_method" value="delete">
+                          <button class="btn p-0 bg-transparent text-primary" type="submit" title="Unlike"><%=answer.likes.count%>&nbsp;&nbsp;<i id="unlike_button" class="fa" aria-hidden="true"></i></button>
+                        <% end %>
+                      </form>
+                    </div>
+                      <% if answer.user==current_user %>
+                    <div class="col-1 text-right">
+                      <a class="btn p-0 bg-transparent text-warning" href="/answers/<%=answer.id%>/edit" title="Edit Answer"><i id="edit_button" class="fa" aria-hidden="true"></i></a>
+                    </div>
+                    <div class="col-1 text-right">
+                      <form action="/answers/<%=answer.id%>" method="post">
+                        <input type="hidden" id="hidden" name="_method" value="delete">
+                        <button class="btn bg-transparent text-secondary p-0" type="submit" title="Delete Answer"><i id="delete_button" class="fa" aria-hidden="true"></i></button>
+                      </form>
+                    </div>
+                  </div>
+                  <% end %>
+                </li>
+                <% end %>
+              </ul>
+              <footer class="text-muted row text-light">
+                <div class="col text-light">
+                  Answers to <cite><a href="/questions/<%=question.id%>" class="card-link text-light">"<%=question.content%>"</a></cite> Created by <cite><%=question.user.username%></cite>
+                </div>
+              </footer>
+            </blockquote>
+          </li>
+        </ul>
+        <% end %>
+    </div>
+  </div>
+</div>
