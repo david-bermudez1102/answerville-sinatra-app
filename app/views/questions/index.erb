@@ -22,7 +22,7 @@
         <% Question.all.order(id: :desc).each do |question| %>
         <li class="list-group-item" style="background-color: rgba(0,0,0,0.1);border-top:1px solid rgba(0,0,0,0.1);">
           <blockquote>
-            <a href="/questions/<%= question.id %>" class="card-link blockquote text-light"><%=question.content%></a>
+            <a href="/questions/<%= question.id %>" class="card-link blockquote text-light" title="Click here to see question"><%=question.content%></a>
             <footer class="text-muted row text-light">
               <div class="col text-light">
                 Created by <cite><%=question.user.username%></cite>

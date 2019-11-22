@@ -60,6 +60,15 @@
         </div>
         <div class="w-100"></div>
         <ul class="list-group bg-transparent">
+          <% if @user.questions.empty? %>
+            <li class="list-group-item border border-0 display-4 text-center d-flex align-items-center" style="height:200px;font-size:30px; background-color: rgba(0,0,0,0.1);">
+              <% if @user != current_user %>
+              <%=@user.name%> hasn't asked any question yet. Try suggesting them to create a new question!
+              <% else %>
+              <a class="card-link text-light" href="/questions/new">You haven't asked any question yet. Click here to start asking questions!</a>
+              <% end %>
+            </li>
+          <% end %>
           <% @user.questions.order(id: :desc).each do |question| %>
           <li class="list-group-item border border-0" style="background-color: rgba(0,0,0,0.1);">
             <blockquote>

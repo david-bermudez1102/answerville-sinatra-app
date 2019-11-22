@@ -9,7 +9,7 @@ class ApplicationController < Sinatra::Base
     register Sinatra::Flash
     set :session_secret, 'password_security'
   end
-
+  
   get "/" do
     if is_logged_in?
       redirect to "/questions"

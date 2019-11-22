@@ -40,8 +40,13 @@ class QuestionsController < ApplicationController
 
   get '/questions/:id/edit' do
     if is_logged_in?
-      @question = Question.find_by_id(params[:id])
-      erb :'/questions/edit'
+      @question = current_user.questions.find_by(id:params[:id])
+      if @question
+        erb :'/questions/edit'
+      else
+        flash[:error] = "You can't edit this question."
+        redirect to "/questions/#{params[:id]}"
+      end
     else
       redirect to "/login"
     end
