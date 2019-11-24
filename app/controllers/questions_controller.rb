@@ -99,6 +99,7 @@ class QuestionsController < ApplicationController
   get '/questions/:id' do
     if is_logged_in?
       @question = Question.find_by_id(params[:id])
+      @like_question = @question.likes.find_by(user:current_user)
       if @question
         erb :'/questions/show'
       else

@@ -17,7 +17,7 @@
           <div class="row p-0">
             <div class="col p-0">
               <form class="p-0" action="/questions/<%=@question.id%>/likes" method="post">
-                  <% if !@question.likes.find_by(user:current_user) %>
+                  <% if !@like_question %>
                   <button class="btn p-0 bg-transparent btn-block text-light" type="submit" title="Like"><%=@question.likes.count%>&nbsp;&nbsp;<i id="like_button" class="fa" aria-hidden="true"></i></button>
                   <% else %>
                   <input type="hidden" id="hidden" name="_method" value="delete">
@@ -104,7 +104,6 @@
               </h5>
             </div>
             <div class="col-8 text-right"><small>Created <%=Helpers.distance_of_time_in_words(answer.created_at.to_i)%> ago. Updated <%=Helpers.distance_of_time_in_words(answer.updated_at.to_i)%> ago.</small></div>
-
           </div>
           <div class="row bg-white">
             <div class="col card-text py-2"><%=answer.content%></div>

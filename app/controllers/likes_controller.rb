@@ -6,7 +6,6 @@ class LikesController < ApplicationController
       if !like_question
         question.likes.build(user:current_user)
       end
-
       if question.save
         redirect to "/questions/#{question.id}"
       else
