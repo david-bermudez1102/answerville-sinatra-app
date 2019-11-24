@@ -3,12 +3,16 @@ class AnswersController < ApplicationController
   post '/questions/:id/answers' do
     if is_logged_in?
       question = Question.find_by_id(params[:id])
-      question.answers.build(content:params[:content],user:current_user)
+      if !question.answered
+        question.answers.build(content:params[:content],user:current_user)
+      end
       if question.save
         redirect to "/questions/#{question.id}"
+      else
+        flash[:error] = "Unable to save your answer."
       end
     else
-      flash[:error] = "You need to login to view discount"
+      flash[:error] = "You need to login to view this content."
       redirect to "/login"
     end
   end
@@ -25,17 +29,22 @@ class AnswersController < ApplicationController
         redirect to "/questions"
       end
     else
-      flash[:error] = "You need to login to view discount"
+      flash[:error] = "You need to login to view this content."
       redirect to "/login"
     end
   end
 
   get '/answers/:id/edit' do
     if is_logged_in?
-      @answer = Answer.find_by_id(params[:id])
-      erb :'/answers/edit'
+      @answer = current_user.answers.find_by_id(params[:id])
+      if @answer && !@answer.question.answered
+        erb :'/answers/edit'
+      else
+        flash[:error] = "Unable to edit this answer."
+        redirect to "/questions/#{@answer.question.id}"
+      end
     else
-      flash[:error] = "You need to login to view discount"
+      flash[:error] = "You need to login to view this content."
       redirect to "/login"
     end
   end
@@ -43,7 +52,7 @@ class AnswersController < ApplicationController
   patch '/answers/:id' do
     if is_logged_in?
       answer = current_user.answers.find_by_id(params[:id])
-      if answer
+      if answer && !answer.question.answered
         answer.update(params[:answer])
       end
 
@@ -51,11 +60,11 @@ class AnswersController < ApplicationController
         flash[:success] = "Your answer was updated successfully."
         redirect to "/questions/#{answer.question.id}"
       else
-        flash[:error] = "Unable to edit this content."
+        flash[:error] = "Unable to edit this answer."
         redirect to "/questions"
       end
     else
-      flash[:error] = "You need to login to view discount"
+      flash[:error] = "You need to login to view this content."
       redirect to "/login"
     end
   end
@@ -65,7 +74,7 @@ class AnswersController < ApplicationController
       @user = User.find_by_username(params[:username])
       erb :'/answers/show'
     else
-      flash[:error] = "You need to login to view discount"
+      flash[:error] = "You need to login to view this content."
       redirect to "/login"
     end
   end

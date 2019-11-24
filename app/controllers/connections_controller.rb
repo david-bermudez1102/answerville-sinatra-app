@@ -9,7 +9,7 @@ class ConnectionsController < ApplicationController
         flash[:error] = "Error while following user. Please try again."
       end
     else
-      flash[:error] = "You need to login first"
+      flash[:error] = "You need to login first."
       redirect to "/login"
     end
   end
@@ -25,7 +25,7 @@ class ConnectionsController < ApplicationController
         flash[:error] = "Error while unfollowing user. Please try again."
       end
     else
-      flash[:error] = "You need to login first"
+      flash[:error] = "You need to login first."
       redirect to "/login"
     end
   end

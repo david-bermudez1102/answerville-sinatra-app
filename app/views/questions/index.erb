@@ -22,13 +22,25 @@
         <% Question.all.order(id: :desc).each do |question| %>
         <li class="list-group-item" style="background-color: rgba(0,0,0,0.1);border-top:1px solid rgba(0,0,0,0.1);">
           <blockquote>
-            <a href="/questions/<%= question.id %>" class="card-link blockquote text-light" title="Click here to see question"><%=question.content%></a>
+            <div class="row">
+              <div class="col text-light">
+                <a href="/questions/<%= question.id %>" class="card-link blockquote text-light" title="Click here to see question">
+                  <i class="fa fa-question-circle" aria-hidden="true"></i>
+                  <%=question.content%>
+                </a>
+              </div>
+              <div class="col text-light text-right">
+                <% if question.answered %>
+                <small><i class="fa fa-check-circle" aria-hidden="true"></i> This question has been marked as answered.</small>
+                <% end %>
+              </div>
+            </div>
             <footer class="text-muted row text-light">
               <div class="col text-light">
-                Created by <cite><%=question.user.username%></cite>
+                <small>Created by <cite><%=question.user.username%></cite></small>
               </div>
               <div class="col text-right text-light">
-                <small><%=Helpers.distance_of_time_in_words(question.created_at.to_i)%> ago.</small>
+                <small><cite><%=Helpers.distance_of_time_in_words(question.created_at.to_i)%> ago.</cite></small>
               </div>
             </footer>
           </blockquote>

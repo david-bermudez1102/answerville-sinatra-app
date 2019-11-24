@@ -1,0 +1,44 @@
+<div class="col-md-7">
+  <% if flash[:error] %>
+  <div class="alert alert-danger">
+    <%=flash[:error]%>
+  </div>
+  <% end %>
+  <div class="card bg-transparent border-0 border-radius-0">
+    <div class="card-header bg-transparent text-light border-0">
+      <div class="row">
+        <div class="col text-center">
+          <h1 class="card-title display-4" style="font-size:46px;">
+            <i class="fa fa-heart" aria-hidden="true"></i>
+            <% if @liked.empty?%>
+            <%= @user != current_user ? "#{@user.name} hasn't" : "you haven't"%> liked anything yet!</h1>
+            <% else %>
+            Content <%= @user != current_user ? "#{@user.name} has" : "you have"%> liked</h1>
+            <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="card-body bg-transparent">
+      <ul class="list-group bg-transparent text-light">
+        <% @liked.group_by(&:date).each do |date,o| %>
+        <h2 class="display-4"  style="font-size:24px;"><%=date%></h1>
+        <% o.each do |liked| %>
+        <%  if liked.class.name == "LikeQuestion" %>
+        <li class="list-group-item display-4" style="font-size:24px; background-color: rgba(0,0,0,0.1);border-top:1px solid rgba(0,0,0,0.1);">
+          <a href="/questions/<%= liked.question.id %>" class="card-link text-light">
+            <%= @user != current_user ? "#{@user.name}" : "You"%> liked the Question <cite>"<%=liked.question.content%>"</cite> by <cite><%=liked.question.user.username%></cite>
+          </a>
+        </li>
+        <% elsif liked.class.name == "LikeAnswer" %>
+        <li class="list-group-item display-4" style="font-size:24px; background-color: rgba(0,0,0,0.1);border-top:1px solid rgba(0,0,0,0.1);">
+          <a href="/questions/<%= liked.answer.question.id %>" class="card-link text-light">
+            <%= @user != current_user ? "#{@user.name}" : "You"%> liked the answer <cite>"<%=liked.answer.content%>"</cite> by <cite><%=liked.answer.user.username%></cite>
+          </a>
+        </li>
+        <% end %>
+        <% end %>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</div>

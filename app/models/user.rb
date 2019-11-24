@@ -16,4 +16,8 @@ class User < ActiveRecord::Base
 
   has_many :following_connections, foreign_key: :user_id, class_name: "Connection"
   has_many :following, through: :following_connections, source: :following
+
+  def liked
+    self.like_questions + self.like_answers
+  end
 end

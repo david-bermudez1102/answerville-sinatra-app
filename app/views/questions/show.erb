@@ -10,50 +10,85 @@
   </div>
   <% end %>
   <div class="card bg-transparent">
-    <div class="card-header text-light" style="background-color: rgba(0,0,0,0.1);">
-      <div class="row">
-        <div class="col">
-          <h2 class="card-title display-4"><%=@question.content %></h2>
-        </div>
+    <div class="card-header text-light pt-1" style="background-color: rgba(0,0,0,0.1);">
+      <div class="row p-0">
+        <div class="col p-0"></div>
         <div class="<%= @question.user==current_user ? "col-3" : "col-1"%>">
-          <div class="row">
+          <div class="row p-0">
             <div class="col p-0">
-              <form action="/questions/<%=@question.id%>/likes" method="post">
-                <div class="form-group">
+              <form class="p-0" action="/questions/<%=@question.id%>/likes" method="post">
                   <% if !@question.likes.find_by(user:current_user) %>
                   <button class="btn p-0 bg-transparent btn-block text-light" type="submit" title="Like"><%=@question.likes.count%>&nbsp;&nbsp;<i id="like_button" class="fa" aria-hidden="true"></i></button>
                   <% else %>
                   <input type="hidden" id="hidden" name="_method" value="delete">
                   <button class="btn p-0 bg-transparent text-light" type="submit" title="Unlike"><%=@question.likes.count%>&nbsp;&nbsp;<i id="unlike_button" class="fa" aria-hidden="true"></i></button>
                   <% end %>
-                </div>
               </form>
             </div>
             <% if @question.user==current_user %>
+            <% if !@question.answered %>
             <div class="col p-0">
               <a class="btn bg-transparent p-0 btn-block text-light" href="/questions/<%=@question.id%>/edit" title="Edit Question"><i id="edit_button" class="fa" aria-hidden="true"></i></a>
             </div>
+            <% end %>
             <div class="col p-0">
               <form action="/questions/<%=@question.id%>" method="post">
                 <input type="hidden" id="hidden" name="_method" value="delete">
-                <div class="form-group">
                   <button class="btn btn-block p-0 bg-transparent text-light" type="submit" title="Delete Question"><i id="delete_button" class="fa" aria-hidden="true"></i></button>
-                </div>
               </form>
             </div>
             <% end %>
           </div>
         </div>
+        </div>
+        <div class="row">
+          <div class="col text-center">
+            <h2 class="card-title display-4">
+              <i class="fa fa-question-circle" aria-hidden="true"></i>
+              <%=@question.content %>
+            </h2>
+          </div>
       </div>
-      <div class="row"><div class="col-12"><small class="card-subtitle">Categories: <%=categories.join(", ")%></small></div></div>
+      <div class="row">
+        <div class="col"><small class="card-subtitle">Categories: <%=categories.join(", ")%></small></div>
+        <div class="col text-right"><cite><small><a class="card-link text-light" href="/users/<%=@question.user.username%>">By <%=@question.user.username%></a></small></cite></div>
+      </div>
     </div>
     <div class="card-body bg-light">
+      <% if !@question.answered %>
       <form action="/questions/<%=@question.id%>/answers" method="post">
         <div class="form-group">
           <textarea class="form-control form-control-lg" name="content" rows="5" cols="80" placeholder="Enter your reply here"></textarea>
         </div>
-        <input class="btn btn-lg send-btn" type="submit" value="Reply">
-      </form>
+        <div class="row">
+          <div class="col"><input class="btn btn-lg send-btn" type="submit" value="Reply"></div>
+        </form>
+        <% if @question.user==current_user %>
+        <div class="col my-auto text-right">
+          <form action="/questions/<%=@question.id%>/answered" method="post">
+            <input type="hidden" name="_method" value="patch">
+            <input class="btn btn-outline-success" type="submit" value="Mark as answered">
+          </form>
+        </div>
+        <% end %>
+      </div>
+      <% else %>
+      <div class="row">
+        <div class="col display-4 text-center text-secondary" style="font-size:32px;">
+          <i class="fa fa-check-circle" aria-hidden="true"></i> Question has been answered
+        </div>
+      </div>
+      <% if @question.user==current_user %>
+      <div class="row pt-4">
+        <div class="col my-auto text-center">
+          <form action="/questions/<%=@question.id%>/answered" method="post">
+            <input type="hidden" name="_method" value="patch">
+            <input class="btn btn-outline-danger" type="submit" value="Unmark as answered">
+          </form>
+        </div>
+      </div>
+      <% end %>
+      <% end %>
     </div>
     <div class="card-footer" style="background-color: rgba(0,0,0,0.1);">
       <% if @question.answers.count > 0 %>
@@ -86,9 +121,11 @@
               </form>
             </div>
             <% if answer.user==current_user %>
+            <% if !@question.answered %>
             <div class="col text-center">
               <a class="btn p-0 bg-transparent text-warning" href="/answers/<%=answer.id%>/edit" title="Edit Answer"><i id="edit_button" class="fa" aria-hidden="true"></i></a>
             </div>
+            <% end %>
             <div class="col text-right">
               <form action="/answers/<%=answer.id%>" method="post">
                 <input type="hidden" id="hidden" name="_method" value="delete">

@@ -9,7 +9,7 @@
       <div class="col" style="background-color: rgba(0,0,0,0.1);">
         <div class="row">
           <div class="col text-center">
-            <h1 class="card-title display-4" style="border-bottom:4px solid rgba(0,0,0,0.1);"><%=@user.name%></h1>
+            <h1 class="card-title display-4" style="border-bottom:4px solid rgba(0,0,0,0.1); font-size:36px;"><%=@user.name%></h1>
             <i class="fa fa-user" aria-hidden="true" style="font-size: 140px;"></i>
             <% if @user != current_user %>
               <% if !@user.followers.include?current_user %>
@@ -49,7 +49,7 @@
           <div class="w-100"></div>
           <div class="col py-2 display-4" style="font-size:20px;border-top:4px solid rgba(0,0,0,0.1);background-color: rgba(0,0,0,0.1);">
             <i class="fa fa-heart" aria-hidden="true"></i>
-            Liked
+            <a class="card-link text-light" href="/users/<%=@user.username%>/likes">Liked (<%=@user.liked.count%>)</a>
           </div>
         </div>
       </div>
@@ -72,7 +72,19 @@
           <% @user.questions.order(id: :desc).each do |question| %>
           <li class="list-group-item border border-0" style="background-color: rgba(0,0,0,0.1);">
             <blockquote>
-              <a href="/questions/<%= question.id %>" class="card-link blockquote text-light"><%=question.content%></a>
+              <div class="row">
+                <div class="col text-light">
+                  <a href="/questions/<%= question.id %>" class="card-link blockquote text-light">
+                    <i class="fa fa-question-circle" aria-hidden="true"></i>
+                    <%=question.content%>
+                  </a>
+                </div>
+                <div class="col text-light text-right">
+                  <% if question.answered %>
+                  <small><i class="fa fa-check-circle" aria-hidden="true"></i> This question has been marked as answered.</small>
+                  <% end %>
+                </div>
+              </div>
               <footer class="text-muted row text-light">
                 <div class="col text-light">
                   <small>Created by <cite><%=question.user.username%></cite></small>
