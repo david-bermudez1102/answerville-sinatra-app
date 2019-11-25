@@ -21,7 +21,7 @@ class AnswersController < ApplicationController
     if is_logged_in?
       answer = current_user.answers.find_by_id(params[:id])
       if answer
-        answer.delete
+        answer.destroy
         flash[:error] = "The answer was deleted successfully."
         redirect to "/questions/#{answer.question.id}"
       else
